@@ -18,17 +18,22 @@ class Db_model extends CI_Model {
     
     // convert string to function call, if string is null or not well formatted
     // set as null
+    
     $coord = NULL;
     if ($coord_string != NULL and $coord_string != '') 
     {
       $coord_array = explode(", ", $coord_string);
-      
       if (sizeof($coord == 2)) { // make sure we have two coordinates
-        $coord = "GeomFromText('POINT(" . implode(' ', $coord_array) . ")')";
-      } else {
         $coord = NULL;
       }
+    } 
+    
+    if ($coord == NULL) {
+      // set to antarctica
+      $coord_array = array(-90, 0); 
     }
+
+    $coord = "GeomFromText('POINT(" . implode(' ', $coord_array) . ")')";
     
     // insert in to db
     $this->db->set($record);
