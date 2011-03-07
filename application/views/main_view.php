@@ -38,60 +38,28 @@ html, body {
 </style>
 
 <script type="text/javascript">
-  // need to declare this function here instead of main.js because of php input
-  function createMarkers(map, markers) {
+    /**
+   * onLoad setup
+   */
+  dojo.addOnLoad( function() {
+      var myOptions = {
+          zoom: 5,
+          center: startLocation,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+      }
+      var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+      
+      createMarkers(map, <?php print $markers; ?>);
+      createUi();
+
+      setupClipboardCopy('<?php print base_url(); ?>');
+      dojo.addOnLoad(function() {
+        // add an extra second of timeout for map to load completely
+        setTimeout("initializeApp()", 1500);
+      });
+  });
   
-    var inputMarkers = <?php print $markers; ?>;
-
-    for (var i = 0; i < inputMarkers.length; i++) {
-      var input_marker = inputMarkers[i];
-      markers[input_marker['id']] =
-        new google.maps.Marker({
-          recordId: input_marker.id,
-          kind: input_marker.kind,
-          position: new google.maps.LatLng(input_marker.lat, input_marker.lng),
-          map: map,
-          icon: lookUpMarker(input_marker.kind, false),
-          title: input_marker.school
-        });
-
-      google.maps.event.addListener(markers[input_marker['id']], 'click', function(id) {
-
-        return function() {
-          var currentMarker = markers[id];
-          if (currentMarker.infoWindow === undefined) {
-            currentMarker.infoWindow = new google.maps.InfoWindow({ 
-              size: new google.maps.Size(150,50)
-            });
-            fetch_info_record(id, currentMarker, map); 
-          } else {
-            if (openWindow) {
-              openWindow.close(map);
-            }
-            currentMarker.infoWindow.open(map, currentMarker);
-            openWindow = currentMarker.infoWindow;
-          }
-
-        }
-      }(input_marker['id']));
-
-    }
-    
-    // create center marker
-    centerMarker = new google.maps.Marker({
-      position: startLocation,
-      map: map,
-      draggable: true,
-      icon:  "http://maps.google.com/mapfiles/arrow.png",
-      shadow: "http://maps.google.com/mapfiles/arrowshadow.png",
-      title: "Search Center",
-    });
-    
-    // keep the marker bouncing after being dragged
-    google.maps.event.addListener(centerMarker, "dragend", function() {
-      centerMarker.setAnimation(google.maps.Animation.BOUNCE);
-    });
-  }
+  
 </script>
 
 </head>
