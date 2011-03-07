@@ -49,37 +49,52 @@ class Db_model extends CI_Model {
      * Query for points inside square bounding box and then filter points
      * too far away
      * 
+     * Latitude is approx 69m per unit
+     * Longitude is 69m-0 per unit
+     * 
+     * Accurate to +- 1 mile
+     * 
      * http://howto-use-mysql-spatial-ext.blogspot.com/
      */
     
-    if (sizeof($center_array) == 2 && $distance) 
+    if (sizeof($center_array) == 2 && is_int($distance)) 
     {
+      $distance_bound = $distance / 69;
+      
       $center = "GeomFromText('POINT(" . implode(' ', $center_array) . ")')";
       $bounding_box = "CONCAT('POLYGON((', 
-        X($center) - $distance, ' ', Y($center) - $distance, ',', 
-        X($center) + $distance, ' ', Y($center) - $distance, ',', 
-        X($center) + $distance, ' ', Y($center) + $distance, ',', 
-        X($center) - $distance, ' ', Y($center) + $distance, ',', 
-        X($center) - $distance, ' ', Y($center) - $distance, '))' 
+        X($center) - $distance_bound, ' ', Y($center) - $distance_bound, ',', 
+        X($center) + $distance_bound, ' ', Y($center) - $distance_bound, ',', 
+        X($center) + $distance_bound, ' ', Y($center) + $distance_bound, ',', 
+        X($center) - $distance_bound, ' ', Y($center) + $distance_bound, ',', 
+        X($center) - $distance_bound, ' ', Y($center) - $distance_bound, '))' 
         )
       ";
       
-      $sql = "SELECT name, AsText(coordinate), SQRT(POW( ABS( X(coordinate) - X($center)), 2) + POW( ABS(Y(coordinate) - Y($center)), 2 )) AS distance 
+  
+      $distance_formula = "3956 * 2 * ASIN(SQRT(POWER(SIN((X($center) - X(coordinate)) 
+      * pi()/180 / 2), 2) + COS(X($center) * pi()/180) *COS(X(coordinate) * pi()/180) 
+      * POWER(SIN((Y($center) - Y(coordinate)) * pi()/180 / 2), 2)))";
+      
+      $sql = "SELECT id, school, X(coordinate) as x, Y(coordinate) as y, $distance_formula AS distance 
               FROM point 
-              WHERE Intersects( coordinate, GeomFromText($bounding_box) ) 
-              AND SQRT(POW( ABS( X(coordinate) - X($center)), 2) + POW( ABS(Y(coordinate) - Y($center)), 2 )) < $distance 
+              WHERE MBRContains(GeomFromText($bounding_box), coordinate) 
+              AND $distance_formula < $distance 
               ORDER BY distance;";
+              
       $query = $this->db->query($sql);
       
-      print("<pre>");
+      /*
+      print "<pre>";
       print_r($query->result());
-      print("</pre>");
+      print "</pre>";
+      */
+      
     } 
     else 
     {
       print "need more paramters";
+      return;
     }
-    
-    
   }
 }
