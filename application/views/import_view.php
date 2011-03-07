@@ -74,9 +74,8 @@
 action="" method="">
     <script type="dojo/method" event="onSubmit">
         if (this.validate()) {
-          console.log(dojo.byId('insertRecord'));
           dojo.xhrPost({
-            url: '/import/insertRecord',
+            url: 'index.php/import/insertRecord',
             handleAs: 'text',
             form: dojo.byId('insertRecord'),
             load: function(data) {

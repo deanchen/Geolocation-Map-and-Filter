@@ -103,7 +103,7 @@ function lookUpMarker(kind, selected) {
  */
 function fetch_info_record(id, currentMarker, map) {
   dojo.xhrGet({
-    url: "/main/fetch_record/" + id,
+    url: "index.php/main/fetch_record/" + id,
     handleAs: "json",
     load: function(data){
       var infoWindowOutput = "<table id='info-window'>";
@@ -134,7 +134,7 @@ function filterMarkers(lat, lng, distance, kind) {
     kind = kind.join("|");
   } 
   dojo.xhrGet({
-    url: "/main/search/" + lat + "/" + lng + "/" + distance + "/" + kind,
+    url: "index.php/main/search/" + lat + "/" + lng + "/" + distance + "/" + kind,
     handleAs: "json",
     load: function(data){
       var records = [];
@@ -322,7 +322,7 @@ function createUi() {
 
 function setupClipboardCopy() {
   //set path
-  ZeroClipboard.setMoviePath('/js/zeroclipboard/ZeroClipboard.swf');
+  ZeroClipboard.setMoviePath('js/zeroclipboard/ZeroClipboard.swf');
   //create client
   var clip = new ZeroClipboard.Client();
   //event
