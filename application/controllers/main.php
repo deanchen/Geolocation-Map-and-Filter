@@ -21,7 +21,6 @@ class Main extends CI_Controller {
     $result = json_encode($this->db_model->get_records(
                       array($x, $y), (int) $distance, $kinds));
     print($result);
-    return($result);
   }
   
   function get_all($print = TRUE)
