@@ -86,7 +86,7 @@ class Db_model extends CI_Model {
               $kinds_clause
               AND $distance_formula < $distance 
               ORDER BY distance;";
-      print $sql;   
+
       $query = $this->db->query($sql);
       return $query->result();
       /*
