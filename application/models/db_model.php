@@ -76,14 +76,14 @@ class Db_model extends CI_Model {
       * pi()/180 / 2), 2) + COS(X($center) * pi()/180) *COS(X(coordinate) * pi()/180) 
       * POWER(SIN((Y($center) - Y(coordinate)) * pi()/180 / 2), 2)))";
       
-      $sql = "SELECT id, school, X(coordinate) as x, Y(coordinate) as y, $distance_formula AS distance 
+      $sql = "SELECT id, school, X(coordinate) as lat, Y(coordinate) as lng, $distance_formula AS distance 
               FROM point 
               WHERE MBRContains(GeomFromText($bounding_box), coordinate) 
               AND $distance_formula < $distance 
               ORDER BY distance;";
               
       $query = $this->db->query($sql);
-      
+      return $query->result();
       /*
       print "<pre>";
       print_r($query->result());
