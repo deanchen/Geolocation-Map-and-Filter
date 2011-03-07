@@ -43,7 +43,7 @@ class Db_model extends CI_Model {
   /**
    * Return records according to distance
    */
-  function get_records($center_array = NULL, $distance = NULL)
+  function get_records($center_array = NULL, $distance = NULL, $kinds = NULL)
   {
     /**
      * Query for points inside square bounding box and then filter points
@@ -59,6 +59,10 @@ class Db_model extends CI_Model {
     
     if (sizeof($center_array) == 2 && is_int($distance)) 
     {
+      $kinds_clause = NULL;
+      if ($kinds and sizeof($kinds) > 0) {
+        $kinds_clause = "AND `kind` IN ('" . implode('\',\'', $kinds) . "')";
+      }
       $distance_bound = $distance / 69;
       
       $center = "GeomFromText('POINT(" . implode(' ', $center_array) . ")')";
@@ -71,17 +75,18 @@ class Db_model extends CI_Model {
         )
       ";
       
-  
+    
       $distance_formula = "3956 * 2 * ASIN(SQRT(POWER(SIN((X($center) - X(coordinate)) 
       * pi()/180 / 2), 2) + COS(X($center) * pi()/180) *COS(X(coordinate) * pi()/180) 
       * POWER(SIN((Y($center) - Y(coordinate)) * pi()/180 / 2), 2)))";
       
-      $sql = "SELECT id, school, X(coordinate) as lat, Y(coordinate) as lng, $distance_formula AS distance 
+      $sql = "SELECT id, school, kind, X(coordinate) as lat, Y(coordinate) as lng, $distance_formula AS distance 
               FROM point 
               WHERE MBRContains(GeomFromText($bounding_box), coordinate) 
+              $kinds_clause
               AND $distance_formula < $distance 
               ORDER BY distance;";
-              
+      print $sql;   
       $query = $this->db->query($sql);
       return $query->result();
       /*
