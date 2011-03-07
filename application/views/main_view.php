@@ -8,8 +8,8 @@
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.5.0/dijit/themes/claro/claro.css" type="text/css" media="all" />
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 <script djConfig="parseOnLoad:true" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.5.0/dojo/dojo.xd.js"></script>
-<script type="text/javascript" src="/js/zeroclipboard/ZeroClipboard.js"></script>
-<script type="text/javascript" src="/js/main.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>/js/zeroclipboard/ZeroClipboard.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>/js/main.js"></script>
 
 <style>
 html, body {
