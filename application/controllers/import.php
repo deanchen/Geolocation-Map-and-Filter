@@ -65,10 +65,13 @@ class Import extends CI_Controller {
     echo "Successfully inserted $count records";
   }
   
-  function insertRecord() {
-    if ($this->input->post('submit')==null) {
-      return "";
+  function insert_record() {
+    
+    if ($this->input->post('canary') != "bird") {
+      echo "Access Denied";
+      return;
     }
+    echo "Submit success";
     $record['name'] = $this->input->post('name', TRUE);
     $record['school'] = $this->input->post('school', TRUE);
     $record['kind'] = $this->input->post('kind', TRUE);

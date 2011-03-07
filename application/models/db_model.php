@@ -53,7 +53,7 @@ class Db_model extends CI_Model {
       $coord_array = array(-90, 0); 
     }
     print_r($coord_array);
-    print("<br />");
+    
     $coord = "GeomFromText('POINT(" . implode(' ', $coord_array) . ")')";
     
     // insert in to db

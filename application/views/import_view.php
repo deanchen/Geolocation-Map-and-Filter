@@ -75,7 +75,7 @@ action="" method="">
     <script type="dojo/method" event="onSubmit">
         if (this.validate()) {
           dojo.xhrPost({
-            url: 'index.php/import/insertRecord',
+            url: 'import/insert_record',
             handleAs: 'text',
             form: dojo.byId('insertRecord'),
             load: function(data) {
@@ -178,7 +178,10 @@ action="" method="">
                    required="true" dojoType="dijit.form.ValidationTextBox" />
             </td>
         </tr>
-        <tr>
+
+                <input type="hidden" id="canary" name="canary" trim="true"
+                   value="bird" dojoType="dijit.form.TextBox" />
+
             <td><label for="state">State:</label></td>
             <td>
                 <input type="text" id="state" name="state" trim="true"
