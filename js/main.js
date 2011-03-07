@@ -5,6 +5,39 @@ var markers = {};
 var centerMarker;
 var startLocation = new google.maps.LatLng(38.6, -98);
 
+/**
+ * Include required dojo components
+ */
+dojo.require("dijit.layout.BorderContainer");
+dojo.require("dijit.layout.ContentPane" );
+dojo.require("dijit.form.Slider");
+dojo.require("dijit.form.HorizontalRule");
+dojo.require("dijit.form.TextBox");
+dojo.require("dijit.form.NumberTextBox");
+dojo.require("dijit.form.CheckBox");
+
+/**
+ * onLoad setup
+ */
+dojo.addOnLoad( function() {
+    var myOptions = {
+        zoom: 5,
+        center: startLocation,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+    
+    createMarkers(map, markers);
+    createUi();
+    dojo.addOnLoad(function() {
+      // add an extra second of timeout for map to load completely
+      setTimeout("initializeApp()", 1500);
+    });
+});
+
+/**
+ * hides the spinner, called when page load is complete
+ */
 var hideLoader = function(){
   dojo.fadeOut({
     node:"preloader",
@@ -16,6 +49,17 @@ var hideLoader = function(){
   }).play();
 }
 
+/**
+ * Called after hideLoader takes place
+ */
+function initializeApp() {
+  hideLoader();
+  centerMarker.setAnimation(google.maps.Animation.BOUNCE);
+}
+
+/**
+ * returns the correct image url based on kind and if marker is selected or not
+ */
 function lookUpMarker(kind, selected) {
   switch(kind) {
     case "four_year":
@@ -30,6 +74,9 @@ function lookUpMarker(kind, selected) {
   }
 }
 
+/**
+ * Creates new XHR filter request and updates map and result table accordingly
+ */
 function filterMarkers(lat, lng, distance, kind) {
   if (kind === undefined) {
     kind = "";
@@ -74,18 +121,24 @@ function filterMarkers(lat, lng, distance, kind) {
   });
 }
 
+/**
+ * Utility function to reset all the markers to unselected state on map
+ */
 function clearMarkers() {
   for (var key in markers) {
-        marker = markers[key];
-        var selected = false;
-        marker.setIcon(lookUpMarker(marker.kind, selected));
-        marker.setAnimation(null);
-      }
+    marker = markers[key];
+    var selected = false;
+    marker.setIcon(lookUpMarker(marker.kind, selected));
+    marker.setAnimation(null);
+  }
 }
 
-var slider1;
 function createUi() {
   
+  /**
+   * Create sliders
+   */
+  // slider 1
   var rulesNode = document.createElement('div');
   dojo.byId('slider').appendChild(rulesNode);
   
@@ -95,7 +148,7 @@ function createUi() {
   }, 
   rulesNode);
 
-  slider1 = new dijit.form.HorizontalSlider({
+  var slider1 = new dijit.form.HorizontalSlider({
     name: "slider",
     value: 10,
     discreteValues: 6,
@@ -113,11 +166,11 @@ function createUi() {
   rulesNode = document.createElement('div');
   dojo.byId('slider2').appendChild(rulesNode);
   
+  // slider 2
   var slider2Rule = new dijit.form.HorizontalRule({
     count: 11,
     style: "height:5px"
   }, rulesNode);
-  
   
   var slider2 = new dijit.form.HorizontalSlider({
     name: "slider2",
@@ -133,6 +186,9 @@ function createUi() {
     showButtons: false
   }, "slider2");
   
+  /**
+   * Distance text box and buttons
+   */
   var textBox = new dijit.form.NumberTextBox({
     name: "distance",
     constraints: {
@@ -186,33 +242,5 @@ function createUi() {
   "clearButton");
 }
 
-function initializeApp() {
-  hideLoader();
-  centerMarker.setAnimation(google.maps.Animation.BOUNCE);
-}
 
-dojo.require( "dijit.layout.BorderContainer" );
-dojo.require( "dijit.layout.ContentPane" );
-dojo.require("dijit.form.Slider");
-dojo.require("dijit.form.HorizontalRule");
-dojo.require("dijit.form.TextBox");
-dojo.require("dijit.form.NumberTextBox");
-dojo.require("dijit.form.CheckBox");
-
-
-dojo.addOnLoad( function() {
-    var myOptions = {
-        zoom: 5,
-        center: startLocation,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    }
-    var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-    
-    createMarkers(map, markers);
-    createUi();
-    dojo.addOnLoad(function() {
-      // add an extra second of timeout for map to load completely
-      setTimeout("initializeApp()", 1500);
-    });
-});
 
