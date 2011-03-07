@@ -357,7 +357,7 @@ function createUi() {
 
 function setupClipboardCopy(base_path) {
   //set path
-  ZeroClipboard.setMoviePath(base_path + '/js/zeroclipboard/ZeroClipboard.swf');
+  ZeroClipboard.setMoviePath(base_path + 'js/zeroclipboard/ZeroClipboard.swf');
   //create client
   var clip = new ZeroClipboard.Client();
   //event

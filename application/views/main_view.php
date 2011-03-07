@@ -92,7 +92,7 @@ html, body {
         <label style='float: left'>0</label> <label style='float: right'>1000</label>
         <div id="slider2"></div>
         <br />
-        <label>Distance: </label><div id="distanceValue"></div>
+        <label>Radius </label><div id="distanceValue"></div>
         <button id="filterButton" type="button"></button>
         <button id="clearButton" type="button"></button>
         <br />
