@@ -85,7 +85,7 @@ class Db_model extends CI_Model {
               WHERE MBRContains(GeomFromText($bounding_box), coordinate) 
               $kinds_clause
               AND $distance_formula < $distance 
-              ORDER BY distance;";
+              ORDER BY kind, distance ASC;";
 
       $query = $this->db->query($sql);
       return $query->result();
