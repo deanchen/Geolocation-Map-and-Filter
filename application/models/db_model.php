@@ -98,8 +98,14 @@ class Db_model extends CI_Model {
     } 
     else 
     {
-      print "need more paramters";
-      return;
+      print "Not enough paramwters";                  
     }
+  }
+  
+  function get_all_records()
+  {
+    $this->db->select('id, school, kind, X(coordinate) AS lat, 
+                 Y(coordinate) AS lng', FALSE);
+    return $this->db->get('point')->result();  
   }
 }

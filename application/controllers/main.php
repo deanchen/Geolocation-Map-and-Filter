@@ -9,7 +9,7 @@ class Main extends CI_Controller {
 
   function index()
   {
-    
+    $this->load->view('main_view', array('markers' => $this->get_all(FALSE)));
   }
   
   function search($x, $y, $distance, $kinds = NULL)
@@ -17,7 +17,19 @@ class Main extends CI_Controller {
     if ($kinds) {
       $kinds = explode('%7C', $kinds);
     }
-    print(json_encode($this->db_model->get_records(array($x, $y), (int) $distance, $kinds)));
+    
+    $result = json_encode($this->db_model->get_records(
+                      array($x, $y), (int) $distance, $kinds));
+    print($result);
+    return($result);
+  }
+  
+  function get_all($print = TRUE)
+  {
+    $result = json_encode($this->db_model->get_all_records());
+    
+    if ($print) print $result;
+    return $result;
   }
 }
     
