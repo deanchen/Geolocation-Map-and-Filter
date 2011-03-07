@@ -46,7 +46,7 @@ class Import extends CI_Controller {
     $records = array();  
     $header = true;
     $count = 0;
-    if (($handle = fopen(getenv("DOCUMENT_ROOT") . "/$filename", "r")) !== FALSE) {
+    if (($handle = fopen(getcwd() . "/$filename", "r")) !== FALSE) {
       while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
         if (!$header) {
           for ($c=0; $c < count($data); $c++) {
