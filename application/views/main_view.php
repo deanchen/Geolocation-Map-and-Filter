@@ -103,18 +103,18 @@ html, body {
     <div dojoType="dijit.layout.ContentPane" region="left" splitter="true" style="width:210px">
         <input id="high_school" name="high_school" dojoType="dijit.form.CheckBox" 
            checked="true">
-        <label for="high_school">
+        <label for="high_school" style="color: #5b5cec; font-weight: bold;">
             H.S.&nbsp;
         </label>
         <input id="community" name="community" dojoType="dijit.form.CheckBox" 
            checked="true">
-        <label for="community">
+        <label for="community" style="color: #02e54d; font-weight: bold;">
             Comm.&nbsp;
         </label>
         
         <input id="four_year" name="four_year" dojoType="dijit.form.CheckBox" 
            checked="true">
-        <label for="four_year">
+        <label for="four_year" style="color: #ff3e4f; font-weight: bold;">
             4 Yr.&nbsp;
         </label>
         <br />
