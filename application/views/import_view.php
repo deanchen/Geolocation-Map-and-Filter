@@ -72,6 +72,9 @@
 <body class="claro" style="height:100%;padding:0;margin:0; overflow:hidden"></body>
 <div dojoType="dijit.form.Form" id="insertRecord" jsId="insertRecord"
 action="" method="">
+    <script type="dojo/method" event="onReset">
+        return confirm('Press OK to reset widget values');
+    </script>
     <script type="dojo/method" event="onSubmit">
         if (this.validate()) {
           dojo.xhrPost({
@@ -209,6 +212,9 @@ action="" method="">
     <button dojoType="dijit.form.Button" type="submit" name="submit"
     value="submit">
         Submit
+    </button>
+    <button dojoType="dijit.form.Button" type="reset">
+        Reset
     </button>
 </div>
 </body>
