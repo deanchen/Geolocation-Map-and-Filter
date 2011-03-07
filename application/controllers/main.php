@@ -23,6 +23,12 @@ class Main extends CI_Controller {
     print($result);
   }
   
+  function fetch_record($id)
+  {
+    $result = json_encode($this->db_model->get_record($id));
+    print($result);
+  }
+  
   function get_all($print = TRUE)
   {
     $result = json_encode($this->db_model->get_all_records());

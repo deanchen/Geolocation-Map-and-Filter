@@ -9,6 +9,7 @@ class Import extends CI_Controller {
 
   function index()
   {
+    $this->load->view('import_view');
     echo "Go to /import_and_remove_csv/csvfile.csv";
   }
   

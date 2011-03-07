@@ -34,16 +34,17 @@ html, body {
 #filteredResults td {
   padding-bottom: 3px;
 }
+
 </style>
 
 <script type="text/javascript">
   // need to declare this function here instead of main.js because of php input
   function createMarkers(map, markers) {
   
-    var input_markers = <?php print $markers; ?>;
+    var inputMarkers = <?php print $markers; ?>;
 
-    for (var i = 0; i < input_markers.length; i++) {
-      var input_marker = input_markers[i];
+    for (var i = 0; i < inputMarkers.length; i++) {
+      var input_marker = inputMarkers[i];
       markers[input_marker['id']] =
         new google.maps.Marker({
           recordId: input_marker.id,
@@ -53,6 +54,27 @@ html, body {
           icon: lookUpMarker(input_marker.kind, false),
           title: input_marker.school
         });
+
+      google.maps.event.addListener(markers[input_marker['id']], 'click', function(id) {
+
+        return function() {
+          var currentMarker = markers[id];
+          if (currentMarker.infoWindow === undefined) {
+            currentMarker.infoWindow = new google.maps.InfoWindow({ 
+              size: new google.maps.Size(150,50)
+            });
+            fetch_info_record(id, currentMarker, map); 
+          } else {
+            if (openWindow) {
+              openWindow.close(map);
+            }
+            currentMarker.infoWindow.open(map, currentMarker);
+            openWindow = currentMarker.infoWindow;
+          }
+
+        }
+      }(input_marker['id']));
+
     }
     
     // create center marker
@@ -110,11 +132,12 @@ html, body {
         <button id="copyButton" type="button"></button>
         <div id="schoolsList"></div>
     </div>
-    <!-- don't need hearder for now 
-    <div dojoType="dijit.layout.ContentPane" region="top" style="height:100px">
-        Top
+
+    <div dojoType="dijit.layout.ContentPane" region="bottom" style="height:16px; padding: 2px">
+        <div id="license" style="float: left">Released Under the The <a href="/license-2.txt">MIT License</a>.</div>
+        <div id="credit" style="float: right">Copyright &copy; 2011 Dean Chen</div>
     </div>
-    -->
+
     <div dojoType="dijit.layout.ContentPane" region="center" style="overflow:hidden">
 
         <div id="map_canvas" style="height:100%; width:100%"></div>

@@ -5,6 +5,7 @@ var markers = {};
 var centerMarker;
 var startLocation = new google.maps.LatLng(38.6, -98);
 var clipboardText = '';
+var openWindow = null;
 /**
  * Include required dojo components
  */
@@ -73,6 +74,32 @@ function lookUpMarker(kind, selected) {
       if (selected) return "http://maps.google.com/intl/en_us/mapfiles/ms/micons/blue-dot.png";
       else return "http://labs.google.com/ridefinder/images/mm_20_blue.png";
   }
+}
+
+/**
+ * Retrieve a single record for a school given id and format it for the infobox
+ */
+function fetch_info_record(id, currentMarker, map) {
+  dojo.xhrGet({
+    url: "/main/fetch_record/" + id,
+    handleAs: "json",
+    load: function(data){
+      var infoWindowOutput = "<table id='info-window'>";
+      
+      for (var i in data) {
+        infoWindowOutput += "<tr>" +
+          "<td><strong>" + i.charAt(0).toUpperCase() + i.slice(1) + "</strong></td>" + 
+          "<td>" + data[i] + "</td></tr>";
+      }
+      infoWindowOutput += '</table>'
+      currentMarker.infoWindow.setContent(infoWindowOutput);
+      if (openWindow) {
+        openWindow.close(map);
+      }
+      currentMarker.infoWindow.open(map, currentMarker);
+      openWindow = currentMarker.infoWindow;
+    }
+  });
 }
 
 /**

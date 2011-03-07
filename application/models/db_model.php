@@ -41,6 +41,16 @@ class Db_model extends CI_Model {
   }
   
   /**
+   * Return a single record given id
+   */
+  function get_record($id) 
+  {
+    $this->db->select('id, name, school, kind, course, email, phone');
+    $this->db->where('id', $id);
+    return $this->db->get('point')->row(); 
+  }
+  
+  /**
    * Return records according to distance
    */
   function get_records($center_array = NULL, $distance = NULL, $kinds = NULL)
