@@ -38,8 +38,11 @@
 |
 */
 
-$route['default_controller'] = "welcome";
+$route['default_controller'] = "main";
+
 $route['404_override'] = '';
+$route['css'] = '/application/views/css';
+$route['js'] = 'main/js';
 
 
 /* End of file routes.php */
