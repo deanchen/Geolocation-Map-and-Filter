@@ -4,7 +4,7 @@ Pamela Wiese,Hartnell College,community,newcourse,pwiese@hartnell.edu,831-755-69
 Anne Urevick,South Philadelphia High School,community,newcourse,aurevick@comcast.net,215-520-0007,PA,"South Philadelphia High School, 2101 S Broad St, Philadelphia, PA 19148-2993, USA","39.9234463, -75.1685114"
 Patricia Riola,Lehigh Carbon Community College,community,existing,priola@lccc.edu,610-799-1791,PA,"Lehigh Carbon Community College, Schnecksville, PA 18078, USA","40.66262, -75.610855"
 Felesia Stukes,Central Piedmont Community College,community,newcourse,felesia.stukes@cpcc.edu,7043306457,NC,"Central Piedmont Community College, PO Box 35009, Charlotte, NC 28204, USA","35.2177744, -80.8296081"
-Luis Miguel Morillas,CPIFP Los Enlaces,community,existing,morillas@gmail.com,+34 976 300804,International,,
+Luis Miguel Morillas,CPIFP Los Enlaces,community,existing,morillas@gmail.com,+34 976 300804,,,
 Owen Astrachan,Duke University,four_year,existing,ola@cs.duke.edu,9196606522,NC,"Duke University - West Campus, Durham, NC, USA","36.0073439, -78.9369563"
 Nigamanth Sridhar,Cleveland State University,four_year,newcourse,n.sridhar1@csuohio.edu,216 6875341,OH,"2121 Euclid Avenue, Cleveland, OH 44115-2214","41.501643, -81.675419"
 "Jeff Gray, Ph.D.",University of Alabama,four_year,newcourse,gray@cs.ua.edu,205-348-2847,AL,"University of Alabama, 801 University Blvd, Tuscaloosa, AL 35487, USA","33.2119603, -87.5392628"
@@ -17,13 +17,13 @@ Donald Slater,Carnegie Mellon,four_year,newcourse,dslater@cmu.edu,41202160272,PA
 Howard Francis,Pikeville College,four_year,existing,francis@pc.edu,606-218-5465,KY,"Pikeville College, 147 Sycamore St, Pikeville, KY 41501, USA","37.4811243, -82.5206131"
 Sarah Zelikovitz,College of Staten Island of CUNY,four_year,existing,sarah.zelikovitz@csi.cuny.edu,718 982-2850,NY,"College of Staten Island, 2800 Victory Blvd, Staten Island, NY 10314, USA","40.608731, -74.153627"
 Dennis Brylow,Marquette University,four_year,existing,brylow@mscs.mu.edu,414 288 6342,WI,"Marquette University, 1250 W Wisconsin Ave, Milwaukee, WI 53233, USA","43.0394721, -87.9332316"
-YUE LIU,National University of Defense Technology,four_year,existing,nudt603@126.com,,International,,
+YUE LIU,National University of Defense Technology,four_year,existing,nudt603@126.com,,,,
 Florence Appel,Saint Xavier University,four_year,existing,appel@sxu.edu,630-650-8995,IL,"St Xavier University, 3700 W 103rd St, Chicago, IL 60655, USA","41.7094091, -87.7160302"
 Susan Rodger,Duke University,four_year,existing,rodger@cs.duke.edu,919-660-6595,NC,"Duke University - West Campus, Durham, NC, USA","36.0073439, -78.9369563"
 Matthew Bauer,Illinois Institute of Technology,four_year,existing,bauerm@iit.edu,773-486-9920,IL,"Illinois Institute of Technology, Fl 2, 565 W Adams St, Chicago, IL 60661-3652, USA","41.878966, -87.6418354"
 Dr. Gwenn Volkert,Kent State University,four_year,existing,lvolkert@kent.edu,330-221-4581,OH,"Kent State University, 800 E Summit St, Kent, OH 44242-2501, USA","41.1450902, -81.3308832"
 Nathanael A. DePano,University of New Orleans,four_year,newcourse,ndepano@uno.edu,504-280-7370,LA,"University of New Orleans, 2000 Lakeshore Dr, New Orleans, LA 70122, USA","30.0289937, -90.0658295"
-Masoud Milani,Florida International University,four_year,newcourse,milani@cs.fiu.edu,305 348 2925,FL,"Florida International University - Biscayne Bay Campus, 2800 NE 147th St, North Miami, FL 33181, USA","25.9101531, -80.1414627"
+Masoud Milani,Florida  University,four_year,newcourse,milani@cs.fiu.edu,305 348 2925,FL,"Florida  University - Biscayne Bay Campus, 2800 NE 147th St, North Miami, FL 33181, USA","25.9101531, -80.1414627"
 Matthew Lang,Moravian College,four_year,,lang@cs.moravian.edu,610-625-7786,PA,"Moravian College, 1200 Main St, Bethlehem, PA 18018, USA","40.6304338, -75.3835275"
 Calvin Lin,The University of Texas at Austin,four_year,newcourse,lin@cs.utexas.edu,(512) 471-9560,TX,"University of Texas, 1925 San Jacinto Blvd, Austin, TX 78712, USA","30.2850284, -97.7335226"
 Trudy Howles,Rochester Institute of Technology,four_year,existing,tmh@cs.rit.edu,585-475-4937,NY,"Rochester Institute of Technology, 1 Lomb Memorial Dr, Rochester, NY 14623-5698, USA","43.0841113, -77.6754875"
@@ -101,7 +101,7 @@ Seth Reichelson,Lake Brantley High School,high_school,existing,seth_reichelson@s
 Ann (Sage) Moore & Mark Frey,Skyline High School,high_school,existing,"sage.moore@skylinehs.org, mark.frey@skylinehs.org",510-484-7976,ca,"Skyline High: High Schools, 12250 Skyline Blvd, Oakland, CA 94619, USA","37.7988164, -122.1613549"
 A. Samuel Koski,Miami Springs Senior High,high_school,existing,skoski@dadeschools.net,305-884-6266,FL,"Miami Springs Senior High School, 751 Dove Ave, Miami Springs, FL 33166-3299, USA","25.8309307, -80.2942173"
 Gail Rodono,Redondo Union High School,high_school,newcourse,grodono@rbusd.org,(310) 798-8665 x4065,CA,"Redondo Beach High School, Redondo Beach, CA 90277, USA","33.8452928, -118.3845188"
-Marie Sylvia Rivera,The Palmas Academy,high_school,newcourse,ms.rivera@palmasacademy.org,Mobile(787)306-1340 or Sc,International,,
+Marie Sylvia Rivera,The Palmas Academy,high_school,newcourse,ms.rivera@palmasacademy.org,Mobile(787)306-1340 or Sc,,,
 Victor M Casas,"The School of Communications, New Media & Technology at",high_school,newcourse,vcasas@verizon.net,323-780-6500 Ext: 429,CA,"456 S Mathews St, Los Angeles, CA 90033","34.0392291, -118.2112054"
 Timothy Barron,Farmington High School,high_school,newcourse,tmbarron@gmail.com,860-985-7035,CT,"Town of Farmington: Farmington High School, 10 Montieth Dr, Farmington, CT 06032, USA","41.7509327, -72.8676003"
 Josh Paley,Henry M. Gunn HS (Palo Alto),high_school,existing,josh.paley@gmail.com,650-703-2485 (but use ema,CA,"Henry M Gunn High School, 780 Arastradero Rd, Palo Alto, CA 94304, USA","37.402614, -122.1343487"
