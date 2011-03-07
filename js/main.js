@@ -4,7 +4,7 @@
 var markers = {};
 var centerMarker;
 var startLocation = new google.maps.LatLng(38.6, -98);
-
+var clipboardText = '';
 /**
  * Include required dojo components
  */
@@ -29,6 +29,7 @@ dojo.addOnLoad( function() {
     
     createMarkers(map, markers);
     createUi();
+    setupClipboardCopy();
     dojo.addOnLoad(function() {
       // add an extra second of timeout for map to load completely
       setTimeout("initializeApp()", 1500);
@@ -87,22 +88,42 @@ function filterMarkers(lat, lng, distance, kind) {
     url: "/main/search/" + lat + "/" + lng + "/" + distance + "/" + kind,
     handleAs: "json",
     load: function(data){
-      var records = {};
+      var records = [];
       
       for(var i=0; i<data.length; i++){
          var id = data[i].id;
-         records[id] = data[i];
+         records.push(data[i]);
       }
       
       // set all markers to unselected
-      clearMarkers();
-      
-      var resultTable = "<table id='results'>";
+      clearFilter();
 
-      for (var key in records) {
-        record = records[key];
+      if (records.length > 0) {
+        dijit.byId('copyButton').set('disabled',false);
+      } else {
+        dojo.byId('schoolsList').innerHTML = "<p><strong>No Results</strong></p>";
+        return;
+      }
+      clipboardText = '';
+      var currentKind = null;
+      var resultTable = "<table id='filteredResults'>";
+      for (var i=0; i<records.length; i++) {
+        record = records[i];
         
-        resultTable += '<tr><td>' + record.school + '</td></tr>';
+        if (currentKind != record.kind) {
+          currentKind = record.kind;
+          // replace _ with space and capitalize
+          currentKindHeader = currentKind.replace('_', ' ').replace(/\w+/g, 
+            function(a){
+              return a.charAt(0).toUpperCase() + a.substr(1).toLowerCase()
+          });
+          if (clipboardText != '') clipboardText += '\r'; 
+          clipboardText += currentKindHeader + '\r'; 
+          resultTable += "<tr><td colspan=2 class='header'>" + currentKindHeader + "</td></tr>";
+        }
+        clipboardText += record.school + "\r";
+        resultTable += '<tr><td>' + record.school + '</td><td>' 
+          + Math.floor(record.distance) + '</td></tr>';
         
         var selected = true;
         var id = record.id;
@@ -124,13 +145,15 @@ function filterMarkers(lat, lng, distance, kind) {
 /**
  * Utility function to reset all the markers to unselected state on map
  */
-function clearMarkers() {
+function clearFilter() {
   for (var key in markers) {
     marker = markers[key];
     var selected = false;
     marker.setIcon(lookUpMarker(marker.kind, selected));
     marker.setAnimation(null);
   }
+  dijit.byId('copyButton').set('disabled',true);
+  dojo.byId('schoolsList').innerHTML = '';
 }
 
 function createUi() {
@@ -235,12 +258,32 @@ function createUi() {
   var clearButton = new dijit.form.Button({
     label: "Clear",
     onClick: function() {
-      clearMarkers();
-      dojo.byId('schoolsList').innerHTML = '';
+      clearFilter();
     }
   },
   "clearButton");
+  
+  
+  var copyButton = new dijit.form.Button({
+    label: "Copy to Clipboard",
+    disabled: true
+  },
+  "copyButton");
 }
+
+function setupClipboardCopy() {
+  //set path
+  ZeroClipboard.setMoviePath('/js/zeroclipboard/ZeroClipboard.swf');
+  //create client
+  var clip = new ZeroClipboard.Client();
+  //event
+  clip.addEventListener('mousedown',function() {
+  clip.setText(clipboardText);
+  });
+  //glue it to the button
+  clip.glue('copyButton');
+}
+
 
 
 

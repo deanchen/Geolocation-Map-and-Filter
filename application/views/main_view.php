@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.5.0/dijit/themes/claro/claro.css" type="text/css" media="all" />
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 <script djConfig="parseOnLoad:true" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.5.0/dojo/dojo.xd.js"></script>
+<script type="text/javascript" src="/js/zeroclipboard/ZeroClipboard.js"></script>
 <script type="text/javascript" src="/js/main.js"></script>
 
 <style>
@@ -23,6 +24,15 @@ html, body {
     no-repeat center center;
   position:absolute;
   z-index:999;
+}
+
+#filteredResults td.header {
+  font-weight: bold;
+  padding-top: 8px;
+}
+
+#filteredResults td {
+  padding-bottom: 3px;
 }
 </style>
 
@@ -95,6 +105,9 @@ html, body {
         <label>Distance: </label><div id="distanceValue"></div>
         <button id="filterButton" type="button"></button>
         <button id="clearButton" type="button"></button>
+        <br />
+        <br />
+        <button id="copyButton" type="button"></button>
         <div id="schoolsList"></div>
     </div>
     <!-- don't need hearder for now 
