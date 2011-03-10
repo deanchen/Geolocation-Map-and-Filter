@@ -56,177 +56,6 @@ var hideLoader = function(){
 }
 
 /**
- * Called after hideLoader takes place
- */
-function initializeApp() {
-  hideLoader();
-  centerMarker.setAnimation(google.maps.Animation.BOUNCE);
-}
-
-/**
- * returns the correct image url based on kind and if marker is selected or not
- */
-function lookUpMarker(kind, selected) {
-  switch(kind) {
-    case "four_year":
-      if (selected) return "http://maps.google.com/intl/en_us/mapfiles/ms/micons/red-dot.png";
-      else return "http://labs.google.com/ridefinder/images/mm_20_red.png";
-    case "community":
-      if (selected) return "http://maps.google.com/intl/en_us/mapfiles/ms/micons/green-dot.png";
-      else return "http://labs.google.com/ridefinder/images/mm_20_green.png";
-    case "high_school":
-      if (selected) return "http://maps.google.com/intl/en_us/mapfiles/ms/micons/blue-dot.png";
-      else return "http://labs.google.com/ridefinder/images/mm_20_blue.png";
-  }
-}
-
-// need to declare this function here instead of main.js because of php input
-  function createMarkers(map, inputMarkers) {
-
-    for (var i = 0; i < inputMarkers.length; i++) {
-      var input_marker = inputMarkers[i];
-      markers[input_marker['id']] =
-        new google.maps.Marker({
-          recordId: input_marker.id,
-          kind: input_marker.kind,
-          position: new google.maps.LatLng(input_marker.lat, input_marker.lng),
-          map: map,
-          icon: lookUpMarker(input_marker.kind, false),
-          title: input_marker.school
-        });
-
-      google.maps.event.addListener(markers[input_marker['id']], 'click', function(id) {
-
-        return function() {
-          var currentMarker = markers[id];
-          if (currentMarker.infoWindow === undefined) {
-            currentMarker.infoWindow = new google.maps.InfoWindow({ 
-              size: new google.maps.Size(150,50)
-            });
-            fetch_info_record(id, currentMarker, map); 
-          } else {
-            if (openWindow) {
-              openWindow.close(map);
-            }
-            currentMarker.infoWindow.open(map, currentMarker);
-            openWindow = currentMarker.infoWindow;
-          }
-
-        }
-      }(input_marker['id']));
-
-    }
-    
-    // create center marker
-    centerMarker = new google.maps.Marker({
-      position: startLocation,
-      map: map,
-      draggable: true,
-      icon:  "http://maps.google.com/mapfiles/arrow.png",
-      shadow: "http://maps.google.com/mapfiles/arrowshadow.png",
-      title: "Search Center",
-    });
-    
-    // keep the marker bouncing after being dragged
-    google.maps.event.addListener(centerMarker, "dragend", function() {
-      centerMarker.setAnimation(google.maps.Animation.BOUNCE);
-    });
-  }
-
-/**
- * Retrieve a single record for a school given id and format it for the infobox
- */
-function fetch_info_record(id, currentMarker, map) {
-  dojo.xhrGet({
-    url: "index.php/main/fetch_record/" + id,
-    handleAs: "json",
-    load: function(data){
-      var infoWindowOutput = "<table id='info-window'>";
-      
-      for (var i in data) {
-        infoWindowOutput += "<tr>" +
-          "<td><strong>" + i.charAt(0).toUpperCase() + i.slice(1) + "</strong></td>" + 
-          "<td>" + data[i] + "</td></tr>";
-      }
-      infoWindowOutput += '</table>'
-      currentMarker.infoWindow.setContent(infoWindowOutput);
-      if (openWindow) {
-        openWindow.close(map);
-      }
-      currentMarker.infoWindow.open(map, currentMarker);
-      openWindow = currentMarker.infoWindow;
-    }
-  });
-}
-
-/**
- * Creates new XHR filter request and updates map and result table accordingly
- */
-function filterMarkers(lat, lng, distance, kind) {
-  if (kind === undefined) {
-    kind = "";
-  } else if (kind instanceof Array) {
-    kind = kind.join("|");
-  } 
-  dojo.xhrGet({
-    url: "index.php/main/search/" + lat + "/" + lng + "/" + distance + "/" + kind,
-    handleAs: "json",
-    load: function(data){
-      var records = [];
-      
-      for(var i=0; i<data.length; i++){
-         var id = data[i].id;
-         records.push(data[i]);
-      }
-      
-      // set all markers to unselected
-      clearFilter();
-
-      if (records.length > 0) {
-        dijit.byId('copyButton').set('disabled',false);
-      } else {
-        dojo.byId('schoolsList').innerHTML = "<p><strong>No Results</strong></p>";
-        return;
-      }
-      clipboardText = '';
-      var currentKind = null;
-      var resultTable = "<table id='filteredResults'>";
-      for (var i=0; i<records.length; i++) {
-        record = records[i];
-        
-        if (currentKind != record.kind) {
-          currentKind = record.kind;
-          // replace _ with space and capitalize
-          currentKindHeader = currentKind.replace('_', ' ').replace(/\w+/g, 
-            function(a){
-              return a.charAt(0).toUpperCase() + a.substr(1).toLowerCase()
-          });
-          if (clipboardText != '') clipboardText += '\r'; 
-          clipboardText += currentKindHeader + '\r'; 
-          resultTable += "<tr><td colspan=2 class='header'>" + currentKindHeader + "</td></tr>";
-        }
-        clipboardText += record.school + "\r";
-        resultTable += '<tr><td>' + record.school + '</td><td>' 
-          + Math.floor(record.distance) + '</td></tr>';
-        
-        var selected = true;
-        var id = record.id;
-        var marker = markers[id];
-        
-        marker.setIcon(lookUpMarker(marker.kind, selected));
-        
-        // hack: need to call twice or dropped icons won't drop again
-        marker.setAnimation(google.maps.Animation.DROP);
-        marker.setAnimation(google.maps.Animation.DROP);
-      }
-      
-      resultTable += "</table>";
-      dojo.byId('schoolsList').innerHTML = resultTable;
-    }
-  });
-}
-
-/**
  * Utility function to reset all the markers to unselected state on map
  */
 function clearFilter() {
@@ -367,6 +196,182 @@ function setupClipboardCopy(base_path) {
   //glue it to the button
   clip.glue('copyButton');
 }
+
+/**
+ * Called after hideLoader takes place
+ */
+function initializeApp() {
+  hideLoader();
+  centerMarker.setAnimation(google.maps.Animation.BOUNCE);
+}
+
+/**
+ * returns the correct image url based on kind and if marker is selected or not
+ */
+function lookUpMarker(kind, selected) {
+  switch(kind) {
+    case "four_year":
+      if (selected) return "http://maps.google.com/intl/en_us/mapfiles/ms/micons/red-dot.png";
+      else return "http://labs.google.com/ridefinder/images/mm_20_red.png";
+    case "community":
+      if (selected) return "http://maps.google.com/intl/en_us/mapfiles/ms/micons/green-dot.png";
+      else return "http://labs.google.com/ridefinder/images/mm_20_green.png";
+    case "high_school":
+      if (selected) return "http://maps.google.com/intl/en_us/mapfiles/ms/micons/blue-dot.png";
+      else return "http://labs.google.com/ridefinder/images/mm_20_blue.png";
+  }
+}
+
+// need to declare this function here instead of main.js because of php input
+  function createMarkers(map, inputMarkers) {
+
+    for (var i = 0; i < inputMarkers.length; i++) {
+      var input_marker = inputMarkers[i];
+      markers[input_marker.id] =
+        new google.maps.Marker({
+          recordId: input_marker.id,
+          kind: input_marker.kind,
+          position: new google.maps.LatLng(input_marker.lat, input_marker.lng),
+          map: map,
+          icon: lookUpMarker(input_marker.kind, false),
+          title: input_marker.school
+        });
+
+      google.maps.event.addListener(markers[input_marker['id']], 'click', function(id) {
+
+        return function() {
+          var currentMarker = markers[id];
+          if (currentMarker.infoWindow === undefined) {
+            currentMarker.infoWindow = new google.maps.InfoWindow({ 
+              size: new google.maps.Size(150,50)
+            });
+            fetch_info_record(id, currentMarker, map); 
+          } else {
+            if (openWindow) {
+              openWindow.close(map);
+            }
+            currentMarker.infoWindow.open(map, currentMarker);
+            openWindow = currentMarker.infoWindow;
+          }
+
+        }
+      }(input_marker['id']));
+
+    }
+    
+    // create center marker
+    centerMarker = new google.maps.Marker({
+      position: startLocation,
+      map: map,
+      draggable: true,
+      icon:  "http://maps.google.com/mapfiles/arrow.png",
+      shadow: "http://maps.google.com/mapfiles/arrowshadow.png",
+      title: "Search Center",
+    });
+    
+    // keep the marker bouncing after being dragged
+    google.maps.event.addListener(centerMarker, "dragend", function() {
+      centerMarker.setAnimation(google.maps.Animation.BOUNCE);
+    });
+  }
+
+/**
+ * Retrieve a single record for a school given id and format it for the infobox
+ */
+function fetch_info_record(id, currentMarker, map) {
+  dojo.xhrGet({
+    url: "index.php/main/fetch_record/" + id,
+    handleAs: "json",
+    load: function(data){
+      var infoWindowOutput = "<table id='info-window'>";
+      
+      for (var i in data) {
+        infoWindowOutput += "<tr>" +
+          "<td><strong>" + i.charAt(0).toUpperCase() + i.slice(1) + "</strong></td>" + 
+          "<td>" + data[i] + "</td></tr>";
+      }
+      infoWindowOutput += '</table>'
+      currentMarker.infoWindow.setContent(infoWindowOutput);
+      if (openWindow) {
+        openWindow.close(map);
+      }
+      currentMarker.infoWindow.open(map, currentMarker);
+      openWindow = currentMarker.infoWindow;
+    }
+  });
+}
+
+/**
+ * Creates new XHR filter request and updates map and result table accordingly
+ */
+function filterMarkers(lat, lng, distance, kind) {
+  if (kind === undefined) {
+    kind = "";
+  } else if (kind instanceof Array) {
+    kind = kind.join("|");
+  } 
+  dojo.xhrGet({
+    url: "index.php/main/search/" + lat + "/" + lng + "/" + distance + "/" + kind,
+    handleAs: "json",
+    load: function(data){
+      var records = [];
+      var i;
+      
+      for(i=0; i<data.length; i++){
+         var id = data[i].id;
+         records.push(data[i]);
+      }
+      
+      // set all markers to unselected
+      clearFilter();
+
+      if (records.length > 0) {
+        dijit.byId('copyButton').set('disabled',false);
+      } else {
+        dojo.byId('schoolsList').innerHTML = "<p><strong>No Results</strong></p>";
+        return;
+      }
+      clipboardText = '';
+      var currentKind = null;
+      var resultTable = "<table id='filteredResults'>";
+      for (i=0; i<records.length; i++) {
+        var record = records[i];
+        
+        if (currentKind != record.kind) {
+          currentKind = record.kind;
+          // replace _ with space and capitalize
+          var currentKindHeader = currentKind.replace('_', ' ').replace(/\w+/g, 
+            function(a){
+              return a.charAt(0).toUpperCase() + a.substr(1).toLowerCase();
+			});
+          if (clipboardText !== '') {
+			clipboardText += '\r';
+          } 
+          clipboardText += currentKindHeader + '\r'; 
+          resultTable += "<tr><td colspan=2 class='header'>" + currentKindHeader + "</td></tr>";
+        }
+        clipboardText += record.school + "\r";
+        resultTable += '<tr><td>' + record.school + '</td><td>' + 
+        	Math.floor(record.distance) + '</td></tr>';
+        
+        var selected = true;
+        var id = record.id;
+        var marker = markers[id];
+        
+        marker.setIcon(lookUpMarker(marker.kind, selected));
+        
+        // hack: need to call twice or dropped icons won't drop again
+        marker.setAnimation(google.maps.Animation.DROP);
+        marker.setAnimation(google.maps.Animation.DROP);
+      }
+      
+      resultTable += "</table>";
+      dojo.byId('schoolsList').innerHTML = resultTable;
+    }
+  });
+}
+
+
 
 
 
