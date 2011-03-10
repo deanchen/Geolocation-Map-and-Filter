@@ -308,7 +308,7 @@ function filterMarkers(lat, lng, distance, kind) {
   if (kind === undefined) {
     kind = "";
   } else if (kind instanceof Array) {
-    kind = kind.join("|");
+    kind = kind.join("%7C");
   } 
   dojo.xhrGet({
     url: "index.php/main/search/" + lat + "/" + lng + "/" + distance + "/" + kind,
